@@ -21,40 +21,77 @@ const close_db = (db) => {
 
 exports.list_students = (course_code, semester, year) => {
     let db = connect_db();
+    let sqlquery = "SELECT ra_aluno FROM matricula WHERE cod_disciplina = ? AND semestre = ? AND ano = ?";
+    let filter = [course_code, semester, year];
 
-    // TODO: SQL to list students at course
+    db.query(sqlquery, filter, function(error, results) {
+        if (error) {
+          return console.error(err.message);
+        }
+        console.log(results);
+      });
 
-    close_db();
+    close_db(db);
 }
 
 exports.set_student_grade = (course_code, semester, year, student_id, grade) => {
     let db = connect_db();
+    let sqlquery = "UPDATE matricula SET nota = ? WHERE ano = ? AND semestre = ? AND cod_disciplina = ? AND ra_aluno = ?";
+    let filter = [grade, year, semester, course_code, student_id];
 
-    // TODO: SQL to set student grade
+    db.query(sqlquery, filter, function(error, results) {
+        if (error) {
+          return console.error(err.message);
+        }
+        console.log(results);
+      });
 
-    close_db();
+    close_db(db);
 }
 
 exports.remove_student_grade = (course_code, semester, year, student_id) => {
     let db = connect_db();
+    var grade = 0;
+    let sqlquery = "UPDATE matricula SET nota = ? WHERE ano = ? AND semestre = ? AND cod_disciplina =  AND ra_aluno = ";
+    let filter = [grade, year, semester, course_code, student_id];
 
-    // TODO: SQL to remove student grade
+    db.query(sqlquery, filter, function(error, results) {
+        if (error) {
+          return console.error(err.message);
+        }
+        console.log(results);
+      });
 
-    close_db();
+    close_db(db);
 }
 
 exports.set_student_absences = (course_code, semester, year, student_id, absences) => {
     let db = connect_db();
+    let sqlquery = "UPDATE matricula SET faltas = ? WHERE ano = ? AND semestre = ? AND cod_disciplina = ? AND ra_aluno = ?";
+    let filter = [absences, year, semester, course_code, student_id];
 
-    // TODO: SQL to set student absences
-
-    close_db();
+    db.query(sqlquery, filter, function(error, results) {
+        if (error) {
+          return console.error(err.message);
+        }
+        console.log(results);
+      });
+      
+    close_db(db);
 }
 
 exports.remove_student_absences = (course_code, semester, year, student_id) => {
     let db = connect_db();
+    var absences = 0;
+    let sqlquery = "UPDATE matricula SET faltas = ? WHERE ano = ? AND semestre = ? AND cod_disciplina = ? AND ra_aluno = ?";
+    let filter = [absences, year, semester, course_code, student_id];
 
-    // TODO: SQL to set student absences
+    db.query(sqlquery, filter, function(error, results) {
+        if (error) {
+          return console.error(err.message);
+        }
+        console.log(results);
+      });
 
-    close_db();
+    close_db(db);
 }
