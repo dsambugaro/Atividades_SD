@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+message Request {
+    uint32 action = 1;
+    string target = 2;
+    uint32 academic_code = 3;
+    string course_code = 4;
+    uint32 academic_year = 5;
+    uint32 academic_semester = 6;
+    float value = 7;
+}
+
+message Response {
+    message Student {
+        uint32 academic_code = 1;
+        string name = 2;
+    }
+    uint32 status = 3;
+    uint32 error_code = 4;
+    string error_message = 5;
+    repeated Student data = 6;
+}
