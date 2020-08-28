@@ -4,12 +4,14 @@ import socket
 import os
 import logging as log
 
+from protobuf_model_pb2 import Request, Response
+
 
 class Client:
     """ TCP socket Client"""
     host = None
     port = None
-    tcp = None
+    conn = None
     connected = False
     threads = []
     encoding = 'utf-8'
@@ -27,8 +29,8 @@ class Client:
 
     def _connect(self):
         """Connects to a TCP socket server"""
-        self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.tcp.connect((self.host, self.port))
+        self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.conn.connect((self.host, self.port))
         self.connected = True
         log.info('Client connected to %s:%s', self.host, self.port)
 
@@ -57,5 +59,15 @@ class Client:
             command = input('Comando: ')
             if 'sair' == command.lower():
                 break
+            if 'listar_alunos' in command.lower():
+                args = command.split(' ')
+                semester_year = args[2].split('/')
+                request = Request()
+                request.action = 3
+                request.target = 'alunos'
+                request.course_code = args[1]
+                request.academic_semester = int(semester_year[0])
+                request.academic_year = int(semester_year[1])
+                self.conn.send(request.SerializeToString())
             else:
                 print('\nComando inválido\n')

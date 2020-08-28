@@ -1,15 +1,15 @@
 class Request {
-    constructor(action, academic_code,
+    constructor(action, target, academic_code,
         course_code, academic_year, academic_semester,
-        grade, absences) {
+        value) {
         
         this.action = action
+        this.target = target
         this.academic_code = academic_code
         this.course_code = course_code
         this.academic_year = academic_year
         this.academic_semester = academic_semester
-        this.grade = grade
-        this.absences = absences
+        this.value = value
     }
 
     get_action = () => {
@@ -18,6 +18,14 @@ class Request {
 
     set_action = (value) => {
         this.action = value
+    }
+
+    get_target = () => {
+        return this.target
+    }
+
+    set_target = (value) => {
+        this.target = value
     }
     
     get_acadmic_code = () => {
@@ -52,12 +60,12 @@ class Request {
         this.academic_semester = value
     }
     
-    get_grade = () => {
-        return this.grade
+    get_value = () => {
+        return this.value
     }
 
-    set_grade = (value) => {
-        this.grade = value
+    set_value = (value) => {
+        this.value = value
     }
     
     get_absences = () => {

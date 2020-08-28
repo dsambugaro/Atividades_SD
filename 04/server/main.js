@@ -3,6 +3,7 @@ const net = require('net')
 const hostname = '127.0.0.1'
 const port = 5000
 const server = net.createServer()
+const message = require('./protobuf_model_pb');
 
 const db = require('./database')
 
@@ -11,11 +12,21 @@ server.on('close', () => {
 })
 
 server.on('connection', (socket) => {
-    socket.setEncoding('utf8')
     console.log('New client connection from ' + socket.remoteAddress + ':' + socket.remotePort)
 
     socket.on('data', (data) => {
-        console.log('Server received : ' + data)
+        let request = message.Request.deserializeBinary(data)
+        if (request.getAction() === 3) {
+            db.list_students(request.getCourseCode(),
+                request.getAcademicSemester(),
+                request.getAcademicYear(), (error, result) => {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log(result);
+                    }
+                })
+        }
         
     })
 
