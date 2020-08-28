@@ -6,8 +6,6 @@ const server = net.createServer()
 
 const db = require('./database')
 
-db.list_students()
-
 server.on('close', () => {
     console.log('Server closed')
 })
@@ -17,7 +15,8 @@ server.on('connection', (socket) => {
     console.log('New client connection from ' + socket.remoteAddress + ':' + socket.remotePort)
 
     socket.on('data', (data) => {
-        console.log('Data sent to server : ' + data)
+        console.log('Server received : ' + data)
+        
     })
 
     socket.on('error', (error) => {
