@@ -16,14 +16,14 @@ if __name__ == "__main__":
 
     parser.add_argument('--port', '-p', nargs=1, type=int,
                         help='server port (default: 5000)',
-                        default='5000')
+                        default=[5000])
 
     args = parser.parse_args()
     # Start server
     if args.type[0] == 'server':
-        server = Server(args.host, args.port)
+        server = Server(args.host, args.port[0])
         server.start()
     # Start client
     elif args.type[0] == 'client':
-        client = Client(args.host, args.port)
+        client = Client(args.host, args.port[0])
         client.start()

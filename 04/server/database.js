@@ -24,7 +24,7 @@ exports.list_students = (course_code, semester, year) => {
 
     // TODO: SQL to list students at course
 
-    close_db();
+    close_db(db);
 }
 
 exports.set_student_grade = (course_code, semester, year, student_id, grade) => {
@@ -32,7 +32,7 @@ exports.set_student_grade = (course_code, semester, year, student_id, grade) => 
 
     // TODO: SQL to set student grade
 
-    close_db();
+    close_db(db);
 }
 
 exports.remove_student_grade = (course_code, semester, year, student_id) => {
@@ -40,7 +40,7 @@ exports.remove_student_grade = (course_code, semester, year, student_id) => {
 
     // TODO: SQL to remove student grade
 
-    close_db();
+    close_db(db);
 }
 
 exports.set_student_absences = (course_code, semester, year, student_id, absences) => {
@@ -48,7 +48,7 @@ exports.set_student_absences = (course_code, semester, year, student_id, absence
 
     // TODO: SQL to set student absences
 
-    close_db();
+    close_db(db);
 }
 
 exports.remove_student_absences = (course_code, semester, year, student_id) => {
@@ -56,5 +56,5 @@ exports.remove_student_absences = (course_code, semester, year, student_id) => {
 
     // TODO: SQL to set student absences
 
-    close_db();
+    close_db(db);
 }

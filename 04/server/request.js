@@ -1,24 +1,15 @@
-class Message {
-    constructor(msg_type, action, academics_codes,
+class Request {
+    constructor(action, academic_code,
         course_code, academic_year, academic_semester,
         grade, absences) {
         
-        this.msg_type = msg_type
         this.action = action
-        this.academics_codes = academics_codes
+        this.academic_code = academic_code
         this.course_code = course_code
         this.academic_year = academic_year
         this.academic_semester = academic_semester
         this.grade = grade
         this.absences = absences
-    }
-
-    get_msg_type = () => {
-        return this.msg_type
-    }
-
-    set_msg_type = (value) => {
-        this.msg_type = value
     }
 
     get_action = () => {
@@ -29,12 +20,12 @@ class Message {
         this.action = value
     }
     
-    get_academics_codes = () => {
-        return this.academics_codes
+    get_acadmic_code = () => {
+        return this.academic_code
     }
 
-    set_academics_codes = (value) => {
-        this.academics_codes = value
+    set_acadmic_code = (value) => {
+        this.academic_code = value
     }
     
     get_course_code = () => {
