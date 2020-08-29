@@ -1,41 +1,41 @@
 class Response {
-    constructor(status, data, error_message, error_code) {
+    constructor(status, data, errorMessage, errorCode) {
         this.status = status
         this.data = data
-        this.error_code = error_code
-        this.error_message = error_message
+        this.errorCode = errorCode
+        this.errorMessage = errorMessage
     }
 
-    get_status = () => {
+    getStatus = () => {
         return this.status
     }
 
-    set_status = (value) => {
+    setStatus = (value) => {
         this.status = value
     }
 
-    get_data = () => {
+    getData = () => {
         return this.data
     }
 
-    set_data = (value) => {
+    setData = (value) => {
         this.data = value
     }
 
-    get_error_code = () => {
-        return this.error_code
+    getErrorCode = () => {
+        return this.errorCode
     }
 
-    set_error_code = (value) => {
-        this.error_code = value
+    setErrorCode = (value) => {
+        this.errorCode = value
     }
 
-    get_error_message = () => {
-        return this.error_message
+    getErrorMessage = () => {
+        return this.errorMessage
     }
 
-    set_error_message = (value) => {
-        this.error_message = value
+    setErrorMessage = (value) => {
+        this.errorMessage = value
     }
 
 }

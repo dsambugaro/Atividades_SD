@@ -13,7 +13,7 @@ $ protoc --js_out=import_style=commonjs,binary:server protobuf_model.proto
 Compile protobuf file for client - run:
 
 ```bash
-$ protoc --python_out:client protobuf_model.proto
+$ protoc --python_out=client protobuf_model.proto
 ```
 
 Install server depencencies - on server folder run:
