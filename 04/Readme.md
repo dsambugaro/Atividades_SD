@@ -14,3 +14,7 @@ Importante:
 - Implementar o servidor e cliente em linguagens distintas.
 - Prover uma implementação usando na comunicação Protocol Buffer.
 - Prover outra implementação usando na comunicação XML ou JSON
+
+Alunos:
+Danilo Sambugaro - 1857347
+Darlan Felipe - 1857355
