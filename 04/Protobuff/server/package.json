@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "google-protobuf": "^3.13.0",
+    "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start":"node main.js"
+  },
+  "author": "Danilo & Darlan",
+  "license": "MIT"
+}

@@ -7,6 +7,7 @@ const message = require('./protobuf_model_pb')
 
 const db = require('./database')
 
+// Create a response with error code and message
 const newResponseError = (status, code, error_message) => {
     response = new message.Response()
     response.setStatus(status)
@@ -16,6 +17,7 @@ const newResponseError = (status, code, error_message) => {
     return response_bytes
 }
 
+// Create a response without error code and message
 const newResponseSuccess = (status) => {
     response = new message.Response()
     response.setStatus(status)
@@ -25,7 +27,7 @@ const newResponseSuccess = (status) => {
     return response_bytes
 }
 
-
+// Check and validade resquest
 const validateRequest = (request) => {
     hasAction = request.getAction() ? true : false
     hasTarget = request.getTarget() ? true : false
@@ -36,13 +38,17 @@ const validateRequest = (request) => {
     hasValue = request.getValue() ? true : false
 
     if (!hasAction || !hasTarget) {
+        // If no action or target, request is invalid
         return false
     } else {
         if (request.getAction() === 3) {
+            // if request action are 3, request must have this fields
             return hasAcademicYear && hasAcademicSemester && hasCourseCode
         } else if (request.getAction() === 1) {
+            // if request action are 1, request must have this fields
             return hasAcademicYear && hasAcademicSemester && hasCourseCode && hasAcademicCode && hasValue
         } else if (request.getAction() === 2) {
+            // if request action are 2, request must have this fields
             return hasAcademicYear && hasAcademicSemester && hasCourseCode && hasAcademicCode
         }
     }
@@ -50,15 +56,19 @@ const validateRequest = (request) => {
 }
 
 server.on('close', () => {
+    // Called on server close event
     console.log('Server closed')
 })
 
 server.on('connection', (socket) => {
+    // Called on new connection to server
     console.log('New client connection from ' + socket.remoteAddress + ':' + socket.remotePort)
 
     socket.on('data', (data) => {
+        // Called on data received on server
         let request = message.Request.deserializeBinary(data)
-        if (validateRequest(request)) {
+        if (validateRequest(request)) { // Verify request
+            // Call methods according to request and send appropriately response
             if (request.getAction() === 3) {
                 db.list_students(request.getCourseCode(),
                     request.getAcademicSemester(),
@@ -129,16 +139,19 @@ server.on('connection', (socket) => {
                 socket.write(newResponseError(400, 400, 'Ação inválida'))
             }
         } else {
+            // Send error if request was invalids
             socket.write(newResponseError(400, 400, 'Requisição incorreta - Verifique os dados enviados'))
         }
 
     })
 
     socket.on('error', (error) => {
+        // Called on socket error
         console.log('Socket Error : ' + error)
     })
 
     socket.on('close', (error) => {
+        // Called when socket closes
         console.log('Socket closed!')
         if (error) {
             console.log('Socket was closed because of transmission error')
@@ -147,11 +160,14 @@ server.on('connection', (socket) => {
 })
 
 server.on('error', (error) => {
+    // Called on server error
     console.log('Server Error: ' + error)
 })
 
 server.on('listening', () => {
+    // Called when server starts listening
     console.log('Server is listening!')
 })
 
+// Start server listening
 server.listen(port, hostname)

@@ -1,3 +1,5 @@
+import json
+
 class Response:
     """Class representing a response"""
 
@@ -35,3 +37,10 @@ class Response:
 
     def set_error_message(self, value):
         self.error_message = value
+    
+    def to_json(self):
+        return json.dumps(self.__dict__)
+    
+    @classmethod
+    def from_json(cls, json_data):
+        return cls(**json.loads(json_data))

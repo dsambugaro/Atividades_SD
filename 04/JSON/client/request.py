@@ -1,3 +1,5 @@
+import json
+
 class Request:
     """Class representing a request"""
     
@@ -62,3 +64,10 @@ class Request:
 
     def set_value(self, value):
         self.value = value
+    
+    def to_json(self):
+        return json.dumps(self.__dict__)
+    
+    @classmethod
+    def from_json(cls, json_data):
+        return cls(**json.loads(json_data))

@@ -48,19 +48,21 @@ class Client:
 
     def new_request(self, action, target, course_code, academic_semester,
                     academic_year, academic_code, value):
+        """Creates a new request from args"""
         request = Request()
-        request.action = action if action else 0
-        request.target = target if target else ''
-        request.course_code = course_code if course_code else ''
-        request.academic_semester = academic_semester if academic_year else 0
-        request.academic_year = academic_year if academic_year else 0
-        request.academic_code = academic_code if academic_code else 0
-        request.value = value if value else 0.0
+        request.action = action if action else 0 # default: 0
+        request.target = target if target else '' # default: ''
+        request.course_code = course_code if course_code else '' # default: ''
+        request.academic_semester = academic_semester if academic_year else 0 # default: 0
+        request.academic_year = academic_year if academic_year else 0 # default: 0
+        request.academic_code = academic_code if academic_code else 0 # default: 0
+        request.value = value if value else 0.0 # default: 0.0
         return request
 
     def new_response(self, reponse_bytes):
+        """Creates a new response from bytes"""
         response = Response()
-        response.ParseFromString(reponse_bytes)
+        response.ParseFromString(reponse_bytes) # Parse data in bytes to class Response
         return response
 
     def start(self):
@@ -70,87 +72,114 @@ class Client:
             log.error('Client not connected')
             exit(1)
 
+        # Prints menu
         self.show_help()
 
         while True:
             command = input('Comando: ')
-            args = command.split(' ')
+            args = command.split(' ') # Split args from input
             if 'sair' == args[0].lower():
-                break
+                break # Exit client
             elif 'listar_alunos' in args[0].lower():
-                semester_year = args[2].split('/')
+                semester_year = args[2].split('/') # Get semester and year
+                # Create a new request
                 request = self.new_request(
                     3, 'alunos', args[1], int(semester_year[0]),
                     int(semester_year[1]), None, None)
+                # Get request bytes and send to server
                 self.conn.send(request.SerializeToString())
-                teste = self.conn.recv(2048)
-                response = self.new_response(teste)
+                # Get server response and create a new response class
+                response = self.new_response(self.conn.recv(2048))
                 print('\n===================================')
                 if response.error_code:
+                    # Print error
                     print('Erro {} - {}'.format(response.error_code,
                                                 response.error_message))
                 elif len(response.academic_code):
+                    # Print results
                     for i in range(len(response.academic_code)):
                         print('{} - {}'.format(response.academic_code[i],
                                             response.academic_name[i]))
                 else:
+                    # Print this msg if no results are found
                     print('Sem resultados')
                 print('===================================\n')
             elif 'define_nota' in args[0].lower():
-                semester_year = args[3].split('/')
+                semester_year = args[3].split('/') # Get semester and year
+                # Create a new request
                 request = self.new_request(
                     1, 'grade', args[1], int(semester_year[0]),
                     int(semester_year[1]), int(args[2]), float(args[4]))
+                # Get request bytes and send to server
                 self.conn.send(request.SerializeToString())
+                # Get server response and create a new response class
                 response = self.new_response(self.conn.recv(2048))
                 print('\n===================================')
                 if response.error_code:
+                    # Print error
                     print('Erro {} - {}'.format(response.error_code,
                                                 response.error_message))
                 else:
+                    # Print succes
                     print('Nota definida com sucesso')
                 print('===================================\n')
             elif 'remove_nota' in args[0].lower():
-                semester_year = args[3].split('/')
+                semester_year = args[3].split('/') # Get semester and year
+                # Create a new request
                 request = self.new_request(
                     2, 'grade', args[1], int(semester_year[0]),
                     int(semester_year[1]), int(args[2]), None)
+                # Get request bytes and send to server
                 self.conn.send(request.SerializeToString())
+                # Get server response and create a new response class
                 response = self.new_response(self.conn.recv(2048))
                 print('\n===================================')
                 if response.error_code:
+                    # Print error
                     print('Erro {} - {}'.format(response.error_code,
                                                 response.error_message))
                 else:
+                    # Print succes
                     print('Nota removida com sucesso')
                 print('===================================\n')
             elif 'define_falta' in args[0].lower():
-                semester_year = args[3].split('/')
+                semester_year = args[3].split('/') # Get semester and year
+                # Create a new request
                 request = self.new_request(
                     1, 'absences', args[1], int(semester_year[0]),
                     int(semester_year[1]), int(args[2]), float(args[4]))
+                # Get request bytes and send to server
                 self.conn.send(request.SerializeToString())
+                # Get server response and create a new response class
                 response = self.new_response(self.conn.recv(2048))
                 print('\n===================================')
                 if response.error_code:
+                    # Print error
                     print('Erro {} - {}'.format(response.error_code,
                                                 response.error_message))
                 else:
+                    # Print success
                     print('Faltas definida com sucesso')
                 print('===================================\n')
             elif 'remove_falta' in args[0].lower():
-                semester_year = args[3].split('/')
+                semester_year = args[3].split('/') # Get semester and year
+                # Create a new request
                 request = self.new_request(
                     2, 'absences', args[1], int(semester_year[0]),
                     int(semester_year[1]), int(args[2]), None)
+                # Get request bytes and send to server
                 self.conn.send(request.SerializeToString())
+                # Get server response and create a new response class
                 response = self.new_response(self.conn.recv(2048))
                 print('\n===================================')
                 if response.error_code:
+                    # Print error
                     print('Erro {} - {}'.format(response.error_code,
                                                 response.error_message))
                 else:
+                    # Print succes
                     print('Faltas removidas com sucesso')
                 print('===================================\n')
             else:
+                # Command invalid
                 print('\nComando inválido\n')

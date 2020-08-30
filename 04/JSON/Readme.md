@@ -2,19 +2,6 @@
 Dependencies:
 - Python 3.x
 - Node.js 12.x.x
-- protoc 3.13.x
-
-Compile protobuf file for server - run:
-
-```bash
-$ protoc --js_out=import_style=commonjs,binary:server protobuf_model.proto
-```
-
-Compile protobuf file for client - run:
-
-```bash
-$ protoc --python_out=client protobuf_model.proto
-```
 
 Install server depencencies - on server folder run:
 
