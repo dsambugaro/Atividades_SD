@@ -70,70 +70,146 @@ server.on('connection', (socket) => {
         if (validateRequest(request)) { // Verify request
             // Call methods according to request and send appropriately response
             if (request.getAction() === 3) {
-                db.list_students(request.getCourseCode(),
-                    request.getAcademicSemester(),
-                    request.getAcademicYear(), (error, result) => {
-                        if (error) {
-                            socket.write(newResponseError(500, 500, error))
-                        } else {
-                            response = new message.Response()
-                            response.setStatus(200)
-                            for (let i = 0; i < result.length; i++) {
-                                const element = result[i]
-                                response.addAcademicCode(element.ra)
-                                response.addAcademicName(element.nome)
-                            }
-                            response_bytes = response.serializeBinary()
-                            socket.write(response_bytes)
-                        }
-                    })
+                db.get_course(request.getCourseCode(), (error, result) => {
+                    if (error) {
+                        socket.write(newResponseError(500, 500, error))
+                    } else if (result.length) {
+                        db.list_students(request.getCourseCode(),
+                            request.getAcademicSemester(),
+                            request.getAcademicYear(), (error, result) => {
+                                if (error) {
+                                    socket.write(newResponseError(500, 500, error))
+                                } else {
+                                    response = new message.Response()
+                                    response.setStatus(200)
+                                    for (let i = 0; i < result.length; i++) {
+                                        const element = result[i]
+                                        response.addAcademicCode(element.ra)
+                                        response.addAcademicName(element.nome)
+                                    }
+                                    response_bytes = response.serializeBinary()
+                                    socket.write(response_bytes)
+                                }
+                            })
+                    } else {
+                        socket.write(newResponseError(404, 404, "Disciplina " + request.getCourseCode() + " não encontrada"))
+                    }
+                })
             } else if (request.getAction() === 1) {
                 if (request.getTarget() === 'grade') {
-                    db.set_student_grade(request.getCourseCode(),
-                        request.getAcademicSemester(),
-                        request.getAcademicYear(), request.getAcademicCode(),
-                        Number((request.getValue()).toFixed(1)), (error, _result) => {
-                            if (error) {
-                                socket.write(newResponseError(500, 500, error))
-                            } else {
-                                socket.write(newResponseSuccess(200))
-                            }
-                        })
+                    db.get_course(request.getCourseCode(), (error, result) => {
+                        if (error) {
+                            socket.write(newResponseError(500, 500, error))
+                        } else if (result.length) {
+                            db.get_enrolle(request.getCourseCode(), request.getAcademicSemester(),
+                                request.getAcademicYear(), request.getAcademicCode(), (error, result) => {
+                                    if (error) {
+                                        socket.write(newResponseError(500, 500, error))
+                                    } else if (result.length) {
+                                        db.set_student_grade(request.getCourseCode(),
+                                            request.getAcademicSemester(),
+                                            request.getAcademicYear(), request.getAcademicCode(),
+                                            Number((request.getValue()).toFixed(1)), (error, _result) => {
+                                                if (error) {
+                                                    socket.write(newResponseError(500, 500, error))
+                                                } else {
+                                                    socket.write(newResponseSuccess(200))
+                                                }
+                                            })
+                                    } else {
+                                        socket.write(newResponseError(404, 404, "Matrícula do aluno não encontrada"))
+                                    }
+                                })
+                        } else {
+                            socket.write(newResponseError(404, 404, "Disciplina " + request.getCourseCode() + " não encontrada"))
+                        }
+                    })
                 } else if (request.getTarget() === 'absences') {
-                    db.set_student_absences(request.getCourseCode(),
-                        request.getAcademicSemester(),
-                        request.getAcademicYear(), request.getAcademicCode(),
-                        Math.trunc(request.getValue()), (error, _result) => {
-                            if (error) {
-                                socket.write(newResponseError(500, 500, error))
-                            } else {
-                                socket.write(newResponseSuccess(200))
-                            }
-                        })
+                    db.get_course(request.getCourseCode(), (error, result) => {
+                        if (error) {
+                            socket.write(newResponseError(500, 500, error))
+                        } else if (result.length) {
+                            db.get_enrolle(request.getCourseCode(), request.getAcademicSemester(),
+                                request.getAcademicYear(), request.getAcademicCode(), (error, result) => {
+                                    if (error) {
+                                        socket.write(newResponseError(500, 500, error))
+                                    } else if (result.length) {
+                                        db.set_student_absences(request.getCourseCode(),
+                                            request.getAcademicSemester(),
+                                            request.getAcademicYear(), request.getAcademicCode(),
+                                            Math.trunc(request.getValue()), (error, _result) => {
+                                                if (error) {
+                                                    socket.write(newResponseError(500, 500, error))
+                                                } else {
+                                                    socket.write(newResponseSuccess(200))
+                                                }
+                                            })
+                                    } else {
+                                        socket.write(newResponseError(404, 404, "Matrícula do aluno não encontrada"))
+                                    }
+                                })
+                        } else {
+                            socket.write(newResponseError(404, 404, "Disciplina " + request.getCourseCode() + " não encontrada"))
+                        }
+                    })
                 }
             } else if (request.getAction() === 2) {
                 if (request.getTarget() === 'grade') {
-                    db.remove_student_grade(request.getCourseCode(),
-                        request.getAcademicSemester(),
-                        request.getAcademicYear(), request.getAcademicCode(),
-                        (error, _result) => {
-                            if (error) {
-                                socket.write(newResponseError(500, 500, error))
-                            } else {
-                                socket.write(newResponseSuccess(200))
-                            }
-                        })
+                    db.get_course(request.getCourseCode(), (error, result) => {
+                        if (error) {
+                            socket.write(newResponseError(500, 500, error))
+                        } else if (result.length) {
+                            db.get_enrolle(request.getCourseCode(), request.getAcademicSemester(),
+                                request.getAcademicYear(), request.getAcademicCode(), (error, result) => {
+                                    if (error) {
+                                        socket.write(newResponseError(500, 500, error))
+                                    } else if (result.length) {
+                                        db.remove_student_grade(request.getCourseCode(),
+                                            request.getAcademicSemester(),
+                                            request.getAcademicYear(), request.getAcademicCode(),
+                                            (error, _result) => {
+                                                if (error) {
+                                                    socket.write(newResponseError(500, 500, error))
+                                                } else {
+                                                    socket.write(newResponseSuccess(200))
+                                                }
+                                            })
+                                    } else {
+                                        socket.write(newResponseError(404, 404, "Matrícula do aluno não encontrada"))
+                                    }
+                                })
+                        } else {
+                            socket.write(newResponseError(404, 404, "Disciplina " + request.getCourseCode() + " não encontrada"))
+                        }
+                    })
                 } else if (request.getTarget() === 'absences') {
-                    db.remove_student_absences(request.getCourseCode(),
-                        request.getAcademicSemester(),
-                        request.getAcademicYear(), request.getAcademicCode(),
-                        (error, _result) => {
-                            if (error) {
-                                socket.write(newResponseError(500, 500, error))
-                            } else {
-                                socket.write(newResponseSuccess(200))
-                            }
-                        })
+                    db.get_course(request.getCourseCode(), (error, result) => {
+                        if (error) {
+                            socket.write(newResponseError(500, 500, error))
+                        } else if (result.length) {
+                            db.get_enrolle(request.getCourseCode(), request.getAcademicSemester(),
+                                request.getAcademicYear(), request.getAcademicCode(), (error, result) => {
+                                    if (error) {
+                                        socket.write(newResponseError(500, 500, error))
+                                    } else if (result.length) {
+                                        db.remove_student_absences(request.getCourseCode(),
+                                            request.getAcademicSemester(),
+                                            request.getAcademicYear(), request.getAcademicCode(),
+                                            (error, _result) => {
+                                                if (error) {
+                                                    socket.write(newResponseError(500, 500, error))
+                                                } else {
+                                                    socket.write(newResponseSuccess(200))
+                                                }
+                                            })
+                                    } else {
+                                        socket.write(newResponseError(404, 404, "Matrícula do aluno não encontrada"))
+                                    }
+                                })
+                        } else {
+                            socket.write(newResponseError(404, 404, "Disciplina " + request.getCourseCode() + " não encontrada"))
+                        }
+                    })
                 }
             } else {
                 socket.write(newResponseError(400, 400, 'Ação inválida'))

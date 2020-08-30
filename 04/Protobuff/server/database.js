@@ -21,6 +21,28 @@ const close_db = (db) => {
     })
 }
 
+// Get a course by his code
+exports.get_course = (course_code, callback) => {
+    let db = connect_db()
+    let sqlquery = "SELECT * FROM disciplina WHERE codigo = ?"
+    let filter = [course_code]
+
+    db.all(sqlquery, filter, callback)
+
+    close_db(db)
+}
+
+// Get a enrolle by course, semester, year and student id
+exports.get_enrolle = (course_code, semester, year, student_id, callback) => {
+    let db = connect_db()
+    let sqlquery = "SELECT * FROM matricula WHERE ano = ? AND semestre = ? and cod_disciplina = ? and ra_aluno = ?"
+    let filter = [year, semester, course_code, student_id]
+
+    db.all(sqlquery, filter, callback)
+
+    close_db(db)
+}
+
 // List all students of course at semester/year
 exports.list_students = (course_code, semester, year, callback) => {
     let db = connect_db()
