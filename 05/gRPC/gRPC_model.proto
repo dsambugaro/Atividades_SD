@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+service Grade {
+    rpc create (Request) returns (Response) {}
+    rpc read (Request) returns (Response) {}
+    rpc update (Request) returns (Response) {}
+    rpc delete (Request) returns (Response) {}
+}
+
+service Absences {
+    rpc create (Request) returns (Response) {}
+    rpc read (Request) returns (Response) {}
+    rpc update (Request) returns (Response) {}
+    rpc delete (Request) returns (Response) {}
+}
+
+service Course {
+    rpc gradesAndAbsences (Request) returns (Response) {}
+    rpc students (Request) returns (Response) {}
+}
+
+message Request {
+    uint32 academic_code = 1;
+    string course_code = 2;
+    uint32 academic_year = 3;
+    uint32 academic_semester = 4;
+    uint32 absences = 5;
+    float grade = 6;
+}
+
+message Response {
+    uint32 status = 1;
+    uint32 error_code = 2;
+    string error_message = 3;
+    repeated uint32 academic_code = 4;
+    repeated string academic_name = 5;
+    repeated uint32 absences = 6;
+    repeated float grade = 7;
+}

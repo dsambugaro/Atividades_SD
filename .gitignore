@@ -4,3 +4,4 @@ node_modules/
 package-lock.json
 protobuf_model_pb.js
 protobuf_model_pb2.py
+*.zip
