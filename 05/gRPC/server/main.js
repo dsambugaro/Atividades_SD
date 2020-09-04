@@ -11,14 +11,14 @@ server.addService(services.GradeService, {
         let request = data.request
         utils.validadeCourseAndEnrolle(request, db, (error) => {
             if (error) {
-                callback(null, utils.newResponseError(400, error.code, error.msg))
+                callback(null, utils.newResponseError(400, error.code, error.msg)) // Send error to client
             } else {
                 db.set_student_grade(request.getCourseCode(),
                     request.getAcademicSemester(),
                     request.getAcademicYear(), request.getAcademicCode(),
                     Number((request.getGrade()).toFixed(1)), (error, _result) => {
                         if (error) {
-                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados'))
+                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados')) // Send error to client
                         } else {
                             callback(null, utils.newResponseSuccess(201))
                         }
@@ -32,15 +32,16 @@ server.addService(services.GradeService, {
         let request = data.request
         utils.validadeCourseAndEnrolle(request, db, (error) => {
             if (error) {
-                callback(null, utils.newResponseError(400, error.code, error.msg))
+                callback(null, utils.newResponseError(400, error.code, error.msg)) // Send error to client
             } else {
                 db.get_student_grade(request.getCourseCode(),
                     request.getAcademicSemester(),
                     request.getAcademicYear(), request.getAcademicCode(),
                     (error, result) => {
                         if (error) {
-                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados'))
+                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados')) // Send error to client
                         } else {
+                            // Create new response message
                             response = new message.Response()
                             response.setStatus(200)
                             response.setErrorCode(0)
@@ -49,7 +50,7 @@ server.addService(services.GradeService, {
                                 const element = result[index]
                                 response.addGrade(element.nota)
                             }
-                            callback(null, response)
+                            callback(null, response) // Send response to client
                         }
                     }
                 )
@@ -61,16 +62,16 @@ server.addService(services.GradeService, {
         let request = data.request
         utils.validadeCourseAndEnrolle(request, db, (error) => {
             if (error) {
-                callback(null, utils.newResponseError(400, error.code, error.msg))
+                callback(null, utils.newResponseError(400, error.code, error.msg)) // Send error to client
             } else {
                 db.set_student_grade(request.getCourseCode(),
                     request.getAcademicSemester(),
                     request.getAcademicYear(), request.getAcademicCode(),
                     Number((request.getGrade()).toFixed(1)), (error, _result) => {
                         if (error) {
-                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados'))
+                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados')) // Send error to client
                         } else {
-                            callback(null, utils.newResponseSuccess(200))
+                            callback(null, utils.newResponseSuccess(200)) // Send response to client
                         }
                     }
                 )
@@ -82,16 +83,16 @@ server.addService(services.GradeService, {
         let request = data.request
         utils.validadeCourseAndEnrolle(request, db, (error) => {
             if (error) {
-                callback(null, utils.newResponseError(400, error.code, error.msg))
+                callback(null, utils.newResponseError(400, error.code, error.msg)) // Send error to client
             } else {
                 db.remove_student_grade(request.getCourseCode(),
                     request.getAcademicSemester(),
                     request.getAcademicYear(), request.getAcademicCode(),
                     (error, _result) => {
                         if (error) {
-                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados'))
+                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados')) // Send error to client
                         } else {
-                            callback(null, utils.newResponseSuccess(200))
+                            callback(null, utils.newResponseSuccess(200)) // Send response to client
                         }
                     }
                 )
@@ -105,14 +106,14 @@ server.addService(services.AbsencesService, {
         let request = data.request
         utils.validadeCourseAndEnrolle(request, db, (error) => {
             if (error) {
-                callback(null, utils.newResponseError(400, error.code, error.msg))
+                callback(null, utils.newResponseError(400, error.code, error.msg)) // Send error to client
             } else {
                 db.set_student_absences(request.getCourseCode(),
                     request.getAcademicSemester(),
                     request.getAcademicYear(), request.getAcademicCode(),
                     request.getAbsences(), (error, _result) => {
                         if (error) {
-                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados'))
+                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados')) // Send error to client
                         } else {
                             callback(null, utils.newResponseSuccess(201))
                         }
@@ -126,15 +127,16 @@ server.addService(services.AbsencesService, {
         let request = data.request
         utils.validadeCourseAndEnrolle(request, db, (error) => {
             if (error) {
-                callback(null, utils.newResponseError(400, error.code, error.msg))
+                callback(null, utils.newResponseError(400, error.code, error.msg)) // Send error to client
             } else {
                 db.get_student_absences(request.getCourseCode(),
                     request.getAcademicSemester(),
                     request.getAcademicYear(), request.getAcademicCode(),
                     (error, result) => {
                         if (error) {
-                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados'))
+                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados')) // Send error to client
                         } else {
+                            // Create new response message
                             response = new message.Response()
                             response.setStatus(200)
                             response.setErrorCode(0)
@@ -143,7 +145,7 @@ server.addService(services.AbsencesService, {
                                 const element = result[index]
                                 response.addAbsences(element.faltas)
                             }
-                            callback(null, response)
+                            callback(null, response) // Send response to client
                         }
                     }
                 )
@@ -155,16 +157,16 @@ server.addService(services.AbsencesService, {
         let request = data.request
         utils.validadeCourseAndEnrolle(request, db, (error) => {
             if (error) {
-                callback(null, utils.newResponseError(400, error.code, error.msg))
+                callback(null, utils.newResponseError(400, error.code, error.msg)) // Send error to client
             } else {
                 db.set_student_absences(request.getCourseCode(),
                     request.getAcademicSemester(),
                     request.getAcademicYear(), request.getAcademicCode(),
                     request.getAbsences(), (error, _result) => {
                         if (error) {
-                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados'))
+                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados')) // Send error to client
                         } else {
-                            callback(null, utils.newResponseSuccess(200))
+                            callback(null, utils.newResponseSuccess(200)) // Send response to client
                         }
                     }
                 )
@@ -176,16 +178,16 @@ server.addService(services.AbsencesService, {
         let request = data.request
         utils.validadeCourseAndEnrolle(request, db, (error) => {
             if (error) {
-                callback(null, utils.newResponseError(400, error.code, error.msg))
+                callback(null, utils.newResponseError(400, error.code, error.msg)) // Send error to client
             } else {
                 db.remove_student_absences(request.getCourseCode(),
                     request.getAcademicSemester(),
                     request.getAcademicYear(), request.getAcademicCode(),
                     (error, _result) => {
                         if (error) {
-                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados'))
+                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados')) // Send error to client
                         } else {
-                            callback(null, utils.newResponseSuccess(200))
+                            callback(null, utils.newResponseSuccess(200)) // Send response to client
                         }
                     }
                 )
@@ -199,15 +201,16 @@ server.addService(services.CourseService, {
         let request = data.request
         utils.validadeCourse(request, db, (error) => {
             if (error) {
-                callback(null, utils.newResponseError(400, error.code, error.msg))
+                callback(null, utils.newResponseError(400, error.code, error.msg)) // Send error to client
             } else {
                 db.get_grades_absences(request.getCourseCode(),
                     request.getAcademicSemester(),
                     request.getAcademicYear(),
                     (error, result) => {
                         if (error) {
-                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados'))
+                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados')) // Send error to client
                         } else {
+                            // Create new response message
                             response = new message.Response()
                             response.setStatus(200)
                             response.setErrorCode(0)
@@ -218,7 +221,7 @@ server.addService(services.CourseService, {
                                 response.addAbsences(element.faltas)
                                 response.addGrade(element.nota)
                             }
-                            callback(null, response)
+                            callback(null, response) // Send response to client
                         }
                     }
                 )
@@ -230,15 +233,16 @@ server.addService(services.CourseService, {
         let request = data.request
         utils.validadeCourse(request, db, (error) => {
             if (error) {
-                callback(null, utils.newResponseError(400, error.code, error.msg))
+                callback(null, utils.newResponseError(400, error.code, error.msg)) // Send error to client
             } else {
                 db.list_students(request.getCourseCode(),
                     request.getAcademicSemester(),
                     request.getAcademicYear(),
                     (error, result) => {
                         if (error) {
-                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados'))
+                            callback(null, utils.newResponseError(500, 500, 'Falha no banco de dados')) // Send error to client
                         } else {
+                            // Create new response message
                             response = new message.Response()
                             response.setStatus(200)
                             response.setErrorCode(0)
@@ -248,7 +252,7 @@ server.addService(services.CourseService, {
                                 response.addAcademicCode(element.ra)
                                 response.addAcademicName(element.nome)
                             }
-                            callback(null, response)
+                            callback(null, response) // Send response to client
                         }
                     }
                 )
