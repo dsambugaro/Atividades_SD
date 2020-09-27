@@ -8,13 +8,12 @@ import Pyro4
 
 class Client:
     """RMI Client"""
-    host = None
-    port = None
     connected = False
 
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
+    def __init__(self, uri_grade, uri_absences, uri_course):
+        self.uri_grade = uri_grade
+        self.uri_absences = uri_absences
+        self.uri_course = uri_course
         self._setup_log()
         self._connect()
 
@@ -24,21 +23,20 @@ class Client:
 
     def _connect(self):
         """Connects to a RMI server"""
-        Pyro4.locateNS(self.host, self.port)
-        self.gradeService = Pyro4.Proxy("PYRONAME:GradeService")
-        self.absencesService = Pyro4.Proxy("PYRONAME:AbsencesService")
-        self.courseService = Pyro4.Proxy("PYRONAME:CourseService")
+        self.gradeService = Pyro4.Proxy(self.uri_grade)
+        self.absencesService = Pyro4.Proxy(self.uri_absences)
+        self.courseService = Pyro4.Proxy(self.uri_course)
         self.connected = True
-        log.info('Client connected to %s:%s', self.host, self.port)
+        log.info('Client connected to RMI proxys')
 
     def show_help(self):
         """Prints commands list on console"""
         print('* * * * * * * * * * * * * MENU * * * * * * * * * * * * *')
-        print('MOSTRAR_NOTA <cod. disciplina> <RA> <ano/semestre> <nota>\n\tMostra a nota do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
+        print('MOSTRAR_NOTA <cod. disciplina> <RA> <ano/semestre>\n\tMostra a nota do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
         print('ATUALIZAR_NOTA <cod. disciplina> <RA> <ano/semestre> <nota>\n\tAtualiza a nota do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
         print('INSERIR_NOTA <cod. disciplina> <RA> <ano/semestre> <nota>\n\tDefine a nota do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
         print('REMOVER_NOTA <cod. disciplina> <RA> <ano/semestre>\n\tRemove a nota do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
-        print('MOSTRAR_FALTAS <cod. disciplina> <RA> <ano/semestre> <faltas>\n\tMostra as faltas do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
+        print('MOSTRAR_FALTAS <cod. disciplina> <RA> <ano/semestre>\n\tMostra as faltas do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
         print('ATUALIZAR_FALTAS <cod. disciplina> <RA> <ano/semestre> <faltas>\n\tAtualiza as faltas do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
         print('INSERIR_FALTAS <cod. disciplina> <RA> <ano/semestre> <faltas>\n\tDefine as faltas do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
         print('REMOVER_FALTAS <cod. disciplina> <RA> <ano/semestre>\n\tRemove as faltas do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
@@ -86,16 +84,15 @@ class Client:
                                            int(semester_year[1]))
                 print(
                     '\n======================================================================')
-                if response.error_code:
+                if response['error_code']:
                     # Print error
-                    print('Erro {} - {}'.format(response.error_code,
-                                                response.error_message))
-                elif len(response.data):
+                    print('Erro {} - {}'.format(response['error_code'],
+                                                response['error_message']))
+                elif len(response['data']):
                     # Print results
                     print('RA - NOME')
-                    for i in range(len(response.data)):
-                        print('{} - {}'.format(response.academic_code[i],
-                                               response.academic_name[i]))
+                    for result in response['data']:
+                        print('{} - {}'.format(result[0], result[1]))
                 else:
                     # Print this msg if no results are found
                     print('Sem resultados')
@@ -107,16 +104,16 @@ class Client:
                                                     int(semester_year[1]))
                 print(
                     '\n======================================================================')
-                if response.error_code:
+                if response['error_code']:
                     # Print error
-                    print('Erro {} - {}'.format(response.error_code,
-                                                response.error_message))
-                elif len(response.data):
+                    print('Erro {} - {}'.format(response['error_code'],
+                                                response['error_message']))
+                elif len(response['data']):
                     # Print results
                     print('RA\tNOTA\tFALTAS')
-                    for i in range(len(response.data)):
-                        print('{}\t{:.2f}\t{}'.format(response.academic_code[i],
-                                                      response.grade[i], response.absences[i]))
+                    for result in response['data']:
+                        print('{}\t{}\t{}'.format(result[0],
+                                                  result[1], result[2]))
                 else:
                     # Print this msg if no results are found
                     print('Sem resultados')
@@ -128,10 +125,10 @@ class Client:
                                       int(semester_year[1]), int(args[2]))
                 print(
                     '\n======================================================================')
-                if response.error_code:
+                if response['error_code']:
                     # Print error
-                    print('Erro {} - {}'.format(response.error_code,
-                                                response.error_message))
+                    print('Erro {} - {}'.format(response['error_code'],
+                                                response['error_message']))
                 elif response.grade:
                     # Print succes
                     print('{:.2f}'.format(response.grade[0]))
@@ -147,10 +144,10 @@ class Client:
                     args[2]), float(args[4]))
                 print(
                     '\n======================================================================')
-                if response.error_code:
+                if response['error_code']:
                     # Print error
-                    print('Erro {} - {}'.format(response.error_code,
-                                                response.error_message))
+                    print('Erro {} - {}'.format(response['error_code'],
+                                                response['error_message']))
                 else:
                     # Print succes
                     print('Nota atualizada com sucesso')
@@ -163,10 +160,10 @@ class Client:
                     args[2]), float(args[4]))
                 print(
                     '\n======================================================================')
-                if response.error_code:
+                if response['error_code']:
                     # Print error
-                    print('Erro {} - {}'.format(response.error_code,
-                                                response.error_message))
+                    print('Erro {} - {}'.format(response['error_code'],
+                                                response['error_message']))
                 else:
                     # Print succes
                     print('Nota inserida com sucesso')
@@ -178,10 +175,10 @@ class Client:
                                         int(semester_year[1]), int(args[2]))
                 print(
                     '\n======================================================================')
-                if response.error_code:
+                if response['error_code']:
                     # Print error
-                    print('Erro {} - {}'.format(response.error_code,
-                                                response.error_message))
+                    print('Erro {} - {}'.format(response['error_code'],
+                                                response['error_message']))
                 else:
                     # Print succes
                     print('Nota removida com sucesso')
@@ -193,10 +190,10 @@ class Client:
                                          int(semester_year[1]), int(args[2]))
                 print(
                     '\n======================================================================')
-                if response.error_code:
+                if response['error_code']:
                     # Print error
-                    print('Erro {} - {}'.format(response.error_code,
-                                                response.error_message))
+                    print('Erro {} - {}'.format(response['error_code'],
+                                                response['error_message']))
                 elif response.absences:
                     # Print succes
                     print('{}'.format(response.absences[0]))
@@ -211,10 +208,10 @@ class Client:
                                            int(semester_year[1]), int(args[2]), int(args[4]))
                 print(
                     '\n======================================================================')
-                if response.error_code:
+                if response['error_code']:
                     # Print error
-                    print('Erro {} - {}'.format(response.error_code,
-                                                response.error_message))
+                    print('Erro {} - {}'.format(response['error_code'],
+                                                response['error_message']))
                 else:
                     # Print succes
                     print('Número de Faltas atualizado com sucesso')
@@ -226,10 +223,10 @@ class Client:
                                            int(semester_year[1]), int(args[2]), int(args[4]))
                 print(
                     '\n======================================================================')
-                if response.error_code:
+                if response['error_code']:
                     # Print error
-                    print('Erro {} - {}'.format(response.error_code,
-                                                response.error_message))
+                    print('Erro {} - {}'.format(response['error_code'],
+                                                response['error_message']))
                 else:
                     # Print succes
                     print('Número de faltas inserido com sucesso')
@@ -241,10 +238,10 @@ class Client:
                                            int(semester_year[1]), int(args[2]))
                 print(
                     '\n======================================================================')
-                if response.error_code:
+                if response['error_code']:
                     # Print error
-                    print('Erro {} - {}'.format(response.error_code,
-                                                response.error_message))
+                    print('Erro {} - {}'.format(response['error_code'],
+                                                response['error_message']))
                 else:
                     # Print succes
                     print('Número de faltas removido com sucesso')

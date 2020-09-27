@@ -3,11 +3,12 @@ from database import DB
 db = DB()
 
 def response(status=200, data=[], msg='', error_code=0):
+    
     return {
-        status: status,
-        data: data,
-        error_code: error_code,
-        msg: msg
+        "status": status,
+        "data": data,
+        "error_code": error_code,
+        "error_message": msg
     }
 
 def validate_course(course):

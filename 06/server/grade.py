@@ -1,8 +1,11 @@
 # Grade class
 
+import Pyro4
+
 import utils
 from database import DB
 
+@Pyro4.expose
 class Grade:
     def __init__(self):
         self.db = DB()

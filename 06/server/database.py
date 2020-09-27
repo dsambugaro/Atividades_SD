@@ -6,17 +6,21 @@ import sqlite3
 class DB:
     def __init__(self):
         self.conn = None
+        self.cursor = None
         self.db_name = 'gerenciamento_notas.db'
 
     def _connect(self):
         self.conn = sqlite3.connect(self.db_name)
+        self.cursor = self.conn.cursor()
 
     def _close(self):
+        self.conn.commit()
         self.conn.close()
     
     def _execute_query(self, sqlquery, params):
         self._connect()
-        result = self.conn.execute(sqlquery, params)
+        self.cursor.execute(sqlquery, params)
+        result = self.cursor.fetchall()
         self._close()
         return result
 

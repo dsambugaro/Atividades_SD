@@ -1,8 +1,11 @@
 # Absences class
 
+import Pyro4
+
 import utils
 from database import DB
 
+@Pyro4.expose
 class Absences:
     def __init__(self):
         self.db = DB()

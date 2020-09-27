@@ -1,9 +1,12 @@
 # Course class
 
+import Pyro4
+
 import utils
 from database import DB
 
 
+@Pyro4.expose
 class Course:
     def __init__(self):
         self.db = DB()
@@ -21,4 +24,3 @@ class Course:
             return utils.response(200, data)
         else:
             return utils.response(404, [], 404, "Disciplina '{}' não encontrada".format(course))
-            

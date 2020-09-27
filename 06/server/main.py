@@ -7,14 +7,13 @@ from absences import Absences
 from course import Course
 
 daemon = Pyro4.Daemon()                  
-ns = Pyro4.locateNS()                    
 uri_grade = daemon.register(Grade)
-uri_grade = daemon.register(Absences)
-uri_grade = daemon.register(Course)
+uri_absences = daemon.register(Absences)
+uri_course = daemon.register(Course)
 
-ns.register("GradeService", uri_grade)
-ns.register("AbsencesService", uri_grade)
-ns.register("CourseService", uri_grade)
+print('URI Grade: {}'.format(uri_grade))
+print('URI Absences: {}'.format(uri_absences))
+print('URI Course: {}'.format(uri_course))
 
 print("Server started")
 daemon.requestLoop()                     
