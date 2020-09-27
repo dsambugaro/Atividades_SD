@@ -32,7 +32,7 @@ class Client:
     def show_help(self):
         """Prints commands list on console"""
         print('* * * * * * * * * * * * * MENU * * * * * * * * * * * * *')
-        print('MOSTRAR_NOTA <cod. disciplina> <RA> <ano/semestre>\n\tMostra a nota do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
+        print('MOSTRAR_NOTA <cod. disciplina> <RA> <ano/semestre>2\n\tMostra a nota do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
         print('ATUALIZAR_NOTA <cod. disciplina> <RA> <ano/semestre> <nota>\n\tAtualiza a nota do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
         print('INSERIR_NOTA <cod. disciplina> <RA> <ano/semestre> <nota>\n\tDefine a nota do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
         print('REMOVER_NOTA <cod. disciplina> <RA> <ano/semestre>\n\tRemove a nota do aluno RA numa dada disciplina num dado semestre e ano letivo\n')
