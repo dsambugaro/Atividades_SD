@@ -12,7 +12,7 @@ class Server:
     port = None
     conn = None
     encoding = 'utf-8'
-    default_dir = os.getenv('HOME')+'/server'
+    default_dir = os.getenv('HOME')+os.path.sep+'server'
 
     def __init__(self, host, port):
         self.host = host
@@ -79,7 +79,7 @@ class Server:
                     # Save file
                     with open(file_path, "wb") as afile:
                         afile.write(file_bytes)
-                    log.info('File saved in 1{}'.format(file_path))
+                    log.info('File saved in {}'.format(file_path))
                 else:
                     log.error('Checksum md5 to file {} from client {} doesn\'t match'.format(
                         file_name, addr))

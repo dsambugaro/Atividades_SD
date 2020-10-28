@@ -14,7 +14,7 @@ class Client:
     connected = False
     threads = []
     encoding = 'utf-8'
-    default_dir = os.getenv('HOME')+'/client'
+    default_dir = os.getenv('HOME')+os.path.sep+'client'
 
     def __init__(self, host, port):
         self.host = host
@@ -44,7 +44,7 @@ class Client:
                 else:
                     # Get file name
                     file_name = file_path[file_path.rfind(
-                        "/")+1:].encode(self.encoding)
+                        os.path.sep)+1:].encode(self.encoding)
                     # Get file name size
                     file_name_size = (len(file_name)).to_bytes(1, 'big')
                     # Get file size
