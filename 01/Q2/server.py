@@ -9,6 +9,7 @@ from datetime import datetime
 
 class ClientThread(Thread):
     """Handle client requests"""
+
     def __init__(self, ip, port, conn, encoding, default_dir):
         Thread.__init__(self)
         self.ip = ip
@@ -65,7 +66,8 @@ class ClientThread(Thread):
                             log.info('Added file {} from client {}'.format(
                                 file_name, self.ip))
                             # Send response to client
-                            self.conn.sendall(msg_type + command_type.to_bytes(1, 'big') + status)
+                            self.conn.sendall(
+                                msg_type + command_type.to_bytes(1, 'big') + status)
                         elif command_type == 4:
                             # Get file path
                             file_path = os.path.join(
@@ -140,7 +142,8 @@ class ClientThread(Thread):
                     except Exception:
                         # Send error response to client
                         status = (2).to_bytes(1, 'big')
-                        self.conn.sendall(msg_type + command_type.to_bytes(1, 'big') + status)
+                        self.conn.sendall(
+                            msg_type + command_type.to_bytes(1, 'big') + status)
             except Exception as e:
                 log.error("An exception occurred: %s", e)
                 self.stop()
@@ -154,7 +157,7 @@ class Server:
     tcp = None
     threads = []
     encoding = 'utf-8'
-    default_dir = os.getenv('HOME')+'/server'
+    default_dir = os.getenv('HOME')+os.path.sep+'server'
 
     def __init__(self, host, port):
         self.host = host
