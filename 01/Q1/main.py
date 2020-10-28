@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+from time import sleep
 
 from server import Server
 from client import Client

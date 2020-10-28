@@ -13,7 +13,7 @@ class Client:
     connected = False
     threads = []
     encoding = 'utf-8'
-    default_dir = os.getenv('HOME')+'/client'
+    default_dir = os.getenv('HOME')+os.path.sep+'client'
 
     def __init__(self, host, port):
         self.host = host
@@ -24,20 +24,20 @@ class Client:
     def _setup_log(self):
         """Configures log format and level"""
         log.basicConfig(format='[ %(levelname)s ] %(message)s', level=log.INFO)
-    
+
     def _connect(self):
         """Connects to a TCP socket server"""
         self.tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.tcp.connect((self.host, self.port))
         self.connected = True
         log.info('Client connected to %s:%s', self.host, self.port)
-    
+
     def start(self):
         log.info('Client started')
         if not self.connected:
             log.error('Client not connected')
             exit(1)
-        
+
         while True:
             command = input('Command: ')
             self.tcp.send(command.encode(self.encoding))
@@ -70,4 +70,3 @@ class Client:
                     print('File {} downloaded'.format(file_name))
             else:
                 print('Response: ', response)
-            

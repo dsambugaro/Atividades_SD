@@ -9,6 +9,7 @@ from datetime import datetime
 
 class ClientThread(Thread):
     """Handle client requests"""
+
     def __init__(self, ip, port, conn, encoding, default_dir):
         Thread.__init__(self)
         self.ip = ip
@@ -92,7 +93,7 @@ class Server:
     tcp = None
     threads = []
     encoding = 'utf-8'
-    default_dir = os.getenv('HOME')+'/server'
+    default_dir = os.getenv('HOME')+os.path.sep+'server'
 
     def __init__(self, host, port):
         self.host = host
