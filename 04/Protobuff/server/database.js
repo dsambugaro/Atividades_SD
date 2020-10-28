@@ -48,7 +48,6 @@ exports.list_students = (course_code, semester, year, callback) => {
     let db = connect_db()
     let sqlquery = "SELECT ra, nome from aluno WHERE ra IN (SELECT ra_aluno FROM matricula WHERE cod_disciplina = ? AND semestre = ? AND ano = ?)"
     let filter = [course_code, semester, year]
-    let students = []
 
     db.all(sqlquery, filter, callback)
 
@@ -70,7 +69,7 @@ exports.set_student_grade = (course_code, semester, year, student_id, grade, cal
 exports.remove_student_grade = (course_code, semester, year, student_id, callback) => {
     let db = connect_db()
     let grade = 0
-    let sqlquery = "UPDATE matricula SET nota = ? WHERE ano = ? AND semestre = ? AND cod_disciplina =  AND ra_aluno = "
+    let sqlquery = "UPDATE matricula SET nota = ? WHERE ano = ? AND semestre = ? AND cod_disciplina = ? AND ra_aluno = ?"
     let filter = [grade, year, semester, course_code, student_id]
 
     db.all(sqlquery, filter, callback)
